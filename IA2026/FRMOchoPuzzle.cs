@@ -703,6 +703,11 @@ namespace IA2026
                 "Heurística 8 Puzzle",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
+                // aqui bro
+
+
+
+
             );
         }
     }
