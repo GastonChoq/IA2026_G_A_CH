@@ -554,144 +554,19 @@ namespace IA2026
 
         private void BTNHeuristica_Click(object sender, EventArgs e)
         {
-            int[,] actual = new int[3, 3];
-
-            actual[0, 0] = Convert.ToInt32(LBL00.Text);
-            actual[0, 1] = Convert.ToInt32(LBL01.Text);
-            actual[0, 2] = Convert.ToInt32(LBL02.Text);
-            actual[1, 0] = Convert.ToInt32(LBL10.Text);
-            actual[1, 1] = Convert.ToInt32(LBL11.Text);
-            actual[1, 2] = Convert.ToInt32(LBL12.Text);
-            actual[2, 0] = Convert.ToInt32(LBL20.Text);
-            actual[2, 1] = Convert.ToInt32(LBL21.Text);
-            actual[2, 2] = Convert.ToInt32(LBL22.Text);
-
-            
-            int[,] final = new int[3, 3]
-            {
-        { 1, 2, 3 },
-        { 8, 0, 4 },
-        { 7, 6, 5 }
-            };
-
-            int h1 = 0; 
-            int h2 = 0;  
-
-            
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    int pieza = actual[i, j];
-
-                    
-                    if (pieza != 0)
-                    {
-                        
-                        if (pieza != final[i, j])
-                        {
-                            h1++;
-                        }
-
-                        
-                        int filaFinal = 0;
-                        int colFinal = 0;
-
-                        for (int f = 0; f < 3; f++)
-                        {
-                            for (int c = 0; c < 3; c++)
-                            {
-                                if (final[f, c] == pieza)
-                                {
-                                    filaFinal = f;
-                                    colFinal = c;
-                                }
-                            }
-                        }
-
-                        
-                        h2 += Math.Abs(i - filaFinal) + Math.Abs(j - colFinal);
-                    }
-                }
-            }
-
-            
-            int s = 0;
-
-            
-            int[,] borde = new int[8, 2]
-            {
-        { 0, 0 }, 
-        { 0, 1 }, 
-        { 0, 2 }, 
-        { 1, 2 }, 
-        { 2, 2 }, 
-        { 2, 1 }, 
-        { 2, 0 }, 
-        { 1, 0 }  
-            };
-
-            for (int pieza = 1; pieza <= 8; pieza++)
-            {
-                int filaPieza = -1;
-                int colPieza = -1;
-
-                
-                for (int i = 0; i < 3; i++)
-                {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        if (actual[i, j] == pieza)
-                        {
-                            filaPieza = i;
-                            colPieza = j;
-                        }
-                    }
-                }
-
-                
-                if (filaPieza == 1 && colPieza == 1)
-                {
-                    s += 1;
-                }
-                else
-                {
-                    int indiceBorde = -1;
-
-                    
-                    for (int k = 0; k < 8; k++)
-                    {
-                        if (borde[k, 0] == filaPieza && borde[k, 1] == colPieza)
-                        {
-                            indiceBorde = k;
-                            break;
-                        }
-                    }
-
-                    if (indiceBorde != -1)
-                    {
-                        
-                        int sucesorCorrecto = pieza == 8 ? 1 : pieza + 1;
-
-                        
-                        int siguienteIndice = (indiceBorde + 1) % 8;
-                        int filaSiguiente = borde[siguienteIndice, 0];
-                        int colSiguiente = borde[siguienteIndice, 1];
-
-                        int sucesorActual = actual[filaSiguiente, colSiguiente];
-
-                        if (sucesorActual == sucesorCorrecto)
-                        {
-                            s += 0;
-                        }
-                        else
-                        {
-                            s += 2;
-                        }
-                    }
-                }
-            }
-
+            CLEstado Inicial = new CLEstado(Convert.ToInt32(LBL00.Text),
+                                            Convert.ToInt32(LBL01.Text),
+                                            Convert.ToInt32(LBL02.Text),
+                                            Convert.ToInt32(LBL10.Text),
+                                            Convert.ToInt32(LBL11.Text),
+                                            Convert.ToInt32(LBL12.Text),
+                                            Convert.ToInt32(LBL20.Text),
+                                            Convert.ToInt32(LBL21.Text),
+                                            Convert.ToInt32(LBL22.Text)
+                                            );
+            int h1 = Inicial.H1();
+            int h2 = Inicial.H2();
+            int s = Inicial.S();
             int h3 = h2 + s;
 
             MessageBox.Show(
@@ -703,9 +578,11 @@ namespace IA2026
                 "Heurística 8 Puzzle",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
-                // aqui bro ultima actualizacion
-
             );
+
         }
+
+            
+        
     }
 }

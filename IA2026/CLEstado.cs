@@ -434,6 +434,162 @@ namespace IA2026
             return true;
         }
 
+        public int H1()
+        {
+            int h1 = 0;
+            CLEstado final = new CLEstado(
+                1, 2, 3,
+                8, 0, 4,
+                7, 6, 5
+                );
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    int pieza = _tablero[i, j];
+
+
+                    if (pieza != 0)
+                    {
+
+                        if (pieza != final.tablero[i, j])
+                        {
+                            h1++;
+                        }
+
+                    }
+                }
+            }
+
+            return h1;
+        }
+
+        public int H2()
+        {
+            int h2 = 0;
+            CLEstado final = new CLEstado(
+                1, 2, 3,
+                8, 0, 4,
+                7, 6, 5
+                );
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    int pieza = _tablero[i, j];
+
+
+                    if (pieza != 0)
+                    {
+
+                        int filaFinal = 0;
+                        int colFinal = 0;
+
+                        for (int f = 0; f < 3; f++)
+                        {
+                            for (int c = 0; c < 3; c++)
+                            {
+                                if (final.tablero[f, c] == pieza)
+                                {
+                                    filaFinal = f;
+                                    colFinal = c;
+                                }
+                            }
+                        }
+
+
+                        h2 += Math.Abs(i - filaFinal) + Math.Abs(j - colFinal);
+                    }
+                }
+            }
+            return h2;
+        }
+
+        public int S()
+        {
+
+            int s = 0;
+
+
+            int[,] borde = new int[8, 2]
+            {
+                { 0, 0 },
+                { 0, 1 },
+                { 0, 2 },
+                { 1, 2 },
+                { 2, 2 },
+                { 2, 1 },
+                { 2, 0 },
+                { 1, 0 }
+            };
+
+            for (int pieza = 1; pieza <= 8; pieza++)
+            {
+                int filaPieza = -1;
+                int colPieza = -1;
+
+
+                for (int i = 0; i < 3; i++)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        if (_tablero[i, j] == pieza)
+                        {
+                            filaPieza = i;
+                            colPieza = j;
+                        }
+                    }
+                }
+
+
+                if (filaPieza == 1 && colPieza == 1)
+                {
+                    s += 1;
+                }
+                else
+                {
+                    int indiceBorde = -1;
+
+
+                    for (int k = 0; k < 8; k++)
+                    {
+                        if (borde[k, 0] == filaPieza && borde[k, 1] == colPieza)
+                        {
+                            indiceBorde = k;
+                            break;
+                        }
+                    }
+
+                    if (indiceBorde != -1)
+                    {
+
+                        int sucesorCorrecto = pieza == 8 ? 1 : pieza + 1;
+
+
+                        int siguienteIndice = (indiceBorde + 1) % 8;
+                        int filaSiguiente = borde[siguienteIndice, 0];
+                        int colSiguiente = borde[siguienteIndice, 1];
+
+                        int sucesorActual = _tablero[filaSiguiente, colSiguiente];
+
+                        if (sucesorActual == sucesorCorrecto)
+                        {
+                            s += 0;
+                        }
+                        else
+                        {
+                            s += 2;
+                        }
+                    }
+                }
+            }
+
+
+            return s;
+        }
+
         #endregion
     }
 }
